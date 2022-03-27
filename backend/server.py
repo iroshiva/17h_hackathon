@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_restful import Resource, Api
 from db import create_table, insert_values, get_filter_results
+from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 class filter_professions(Resource):
     def get(self, stress_anxiete, sommeil, attention, alimentation, social):
