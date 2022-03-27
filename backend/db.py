@@ -11,9 +11,6 @@ def create_connection(db_file):
         print(sqlite3.version)
     except Error as e:
         print(e)
-    # finally:
-    #     if conn:
-    #         conn.close()
     
     return conn
 
@@ -42,7 +39,7 @@ def create_table():
                     FOREIGN KEY(id_profession) REFERENCES profession(id_profession)
                     )''',
 
-                ''' CREATE TABLE IF NOT EXISTS rating(
+                ''' CREATE TABLE IF NOT EXISTS rating_profession(
                     id_rating VARCHAR(50),
                     id_profession VARCHAR(50),
                     PRIMARY KEY(id_rating),
@@ -80,14 +77,14 @@ def get_query(query):
     
     return df
 
-# Define our main tables in dataframe
-df_profession = get_query('SELECT * FROM profession')
-df_practitioner = get_query('SELECT * FROM practitioner')
-df_speciality = get_query('SELECT * FROM speciality')
-df_ref = get_query('SELECT * FROM rating_profession')
-
 def get_filter_results(dict_of_values):
     """ Use a json response to filter the values of the dataframe """
+
+    # Define our main tables in dataframe
+    df_profession = get_query('SELECT * FROM profession')
+    df_practitioner = get_query('SELECT * FROM practitioner')
+    df_speciality = get_query('SELECT * FROM speciality')
+    df_ref = get_query('SELECT * FROM rating_profession')
 
     df_result = pd.DataFrame.from_dict(dict_of_values, orient='index', columns=['rating']).reset_index()
     df_result = df_result.join(df_speciality.set_index('name'), on='index')
